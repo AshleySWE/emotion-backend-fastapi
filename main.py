@@ -7,9 +7,11 @@ from datetime import datetime, timezone
 
 app = FastAPI()
 
+
 @app.get("/home")
 def home():
     return 'ah'
+
 
 # 填情緒文字
 
@@ -19,13 +21,17 @@ class Note(BaseModel):
     content: str
     upload_time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+
 # 將前端的 notes 存到後端 DB
 @app.post("/notes")
 def create_notes(notes: list[Note]):
     pass
 
+
 # 編輯 note （用 dict 存放 id -> Note）
 fake_db: dict[str, Note] = {}
+
+
 # @app.put("/notes")
 # def update_note(update_note: Note):
 #     fake_db[update_note.id]
@@ -79,4 +85,3 @@ fake_comments = [
 @app.get("/comment", response_model=List[Comment])
 async def get_comments() -> List[Comment]:
     return sorted(fake_comments, key=lambda comment: comment.upload_time, reverse=True)
-

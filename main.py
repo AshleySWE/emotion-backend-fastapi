@@ -8,28 +8,33 @@ from datetime import datetime, timezone
 app = FastAPI()
 
 
-@app.get("/home")
-def home():
-    return 'ah'
-
-
+# 編輯 note （用 dict 存放 id -> Note）
 # 填情緒文字
+class NoteStatus(str, Enum):
+    Public = "public"
+    Private = "private"
+
 
 class Note(BaseModel):
     id: str
     title: str = None
-    content: str
-    upload_time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    note: str
+    status: NoteStatus
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+fake_db: dict[str, Note] = {}
+
+
+@app.get("/home")
+def home():
+    return 'ah'
 
 
 # 將前端的 notes 存到後端 DB
 @app.post("/notes")
 def create_notes(notes: list[Note]):
     pass
-
-
-# 編輯 note （用 dict 存放 id -> Note）
-fake_db: dict[str, Note] = {}
 
 
 # @app.put("/notes")
